@@ -23,24 +23,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
 
 app.MapGet("/api/customers", async (AppDbContext db) =>
 {
@@ -60,7 +42,7 @@ app.MapGet("/api/azure", () =>
 {
 	return new 
 	{ 
-		Message = "Hello from Azure!",
+		Message = "Hello from Azure CI/CD!",
 		Environment = app.Environment.EnvironmentName,
 		Timestamp = DateTime.UtcNow
 	};
@@ -68,7 +50,6 @@ app.MapGet("/api/azure", () =>
 
 app.MapGet("/api/config", (IConfiguration configuration) =>
 {
-   
     return new 
     { 
         AppliocationName = configuration["PracticeApp:Name"] ?? "Not configured",
@@ -90,8 +71,3 @@ app.MapGet("/api/secret", async () =>
 });
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
