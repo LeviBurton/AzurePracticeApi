@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace AzurePracticeApi.Migrations
+namespace AzurePractice.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
