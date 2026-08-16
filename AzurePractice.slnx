@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AzurePractice.Api/AzurePractice.Api.csproj" />
+    <Project Path="src/AzurePractice.Application/AzurePractice.Application.csproj" />
+    <Project Path="src/AzurePractice.Domain/AzurePractice.Domain.csproj" />
+    <Project Path="src/AzurePractice.Infrastructure/AzurePractice.Infrastructure.csproj" />
+  </Folder>
+</Solution>
