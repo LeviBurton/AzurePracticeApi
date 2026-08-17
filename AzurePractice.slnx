@@ -5,4 +5,7 @@
     <Project Path="src/AzurePractice.Infrastructure/AzurePractice.Infrastructure.csproj" />
     <Project Path="src/AzurePractice.Web/AzurePractice.Web.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AzurePractice.Application.Tests/AzurePractice.Application.Tests.csproj" />
+  </Folder>
 </Solution>
