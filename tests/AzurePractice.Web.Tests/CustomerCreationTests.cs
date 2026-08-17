@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using AzurePractice.Web.Dtos.Customers;
+using Microsoft.AspNetCore.Hosting;
 
 namespace AzurePractice.Web.Tests;
 
@@ -18,6 +19,10 @@ public class CustomerCreationTests
             new WebApplicationFactory<Program>()
                 .WithWebHostBuilder(builder =>
                 {
+                    builder.UseSetting(
+                        "ConnectionStrings:DefaultConnection",
+                        "Server=localhost;Database=TestDb;User Id=test;Password=test;");
+
                     builder.ConfigureServices(services =>
                     {
                         services.RemoveAll<ICustomerService>();
