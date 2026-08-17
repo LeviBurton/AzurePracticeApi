@@ -1,5 +1,6 @@
 using AzurePractice.Application;
 using AzurePractice.Domain;
+using AzurePractice.Web.Dtos.Customers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AzurePractice.Web.Controllers;
@@ -16,15 +17,19 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Customer>>> GetCustomers()
+    public async Task<ActionResult<List<CustomerResponse>>> GetCustomers()
     {
         var customers = await _customerService.GetAllAsync();
 
-        return Ok(customers);
+        var response = customers
+            .Select(ToResponse)
+            .ToList();
+
+        return Ok(response);
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Customer>> GetCustomer(int id)
+    public async Task<ActionResult<CustomerResponse>> GetCustomer(int id)
     {
         var customer = await _customerService.GetByIdAsync(id);
 
@@ -33,18 +38,38 @@ public class CustomersController : ControllerBase
             return NotFound();
         }
 
-        return Ok(customer);
+        return Ok(ToResponse(customer));
     }
 
     [HttpPost]
-    public async Task<ActionResult<Customer>> CreateCustomer(Customer customer)
+    public async Task<ActionResult<CustomerResponse>> CreateCustomer(
+        CreateCustomerRequest request)
     {
+        var customer = new Customer
+        {
+            Name = request.Name,
+            Email = request.Email
+        };
+
         var createdCustomer =
             await _customerService.CreateAsync(customer);
 
+        var response = ToResponse(createdCustomer);
+
         return CreatedAtAction(
             nameof(GetCustomer),
-            new { id = createdCustomer.Id },
-            createdCustomer);
+            new { id = response.Id },
+            response);
+    }
+
+    private static CustomerResponse ToResponse(Customer customer)
+    {
+        return new CustomerResponse
+        {
+            Id = customer.Id,
+            Name = customer.Name,
+            Email = customer.Email,
+            CreatedUtc = customer.CreatedUtc
+        };
     }
 }
