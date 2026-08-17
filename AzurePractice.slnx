@@ -2,6 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/AzurePractice.Application/AzurePractice.Application.csproj" />
     <Project Path="src/AzurePractice.Domain/AzurePractice.Domain.csproj" />
+    <Project Path="src/AzurePractice.Functions/AzurePractice.Functions.csproj" />
     <Project Path="src/AzurePractice.Infrastructure/AzurePractice.Infrastructure.csproj" />
     <Project Path="src/AzurePractice.Web/AzurePractice.Web.csproj" />
   </Folder>
