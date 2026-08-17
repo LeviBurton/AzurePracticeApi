@@ -2,7 +2,7 @@ using AzurePractice.Application;
 using AzurePractice.Domain;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AzurePractice.Api.Controllers;
+namespace AzurePractice.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

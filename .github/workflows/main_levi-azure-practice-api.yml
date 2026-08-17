@@ -7,7 +7,10 @@ on:
   push:
     branches:
       - main
-      - feature/enterprise-architecture
+
+  pull_request:
+    branches:
+      - main
       
   workflow_dispatch:
 
@@ -29,7 +32,7 @@ jobs:
         run: dotnet build AzurePractice.slnx --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish src/AzurePractice.Api/AzurePractice.Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish src/AzurePractice.Web/AzurePractice.Web.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -57,6 +60,13 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9D02F885D43049CF9CA94234CA8ADB14 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_277A1D1402BC41D3A23733197E1300EF }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2E28171ACCF64B1FB962D28CDC396C76 }}
+
+      - name: Set App Service startup command
+        run: |
+          az webapp config set \
+            --resource-group AzurePracticeRG \
+            --name levi-azure-practice-api \
+            --startup-file "dotnet AzurePractice.Web.dll"
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
