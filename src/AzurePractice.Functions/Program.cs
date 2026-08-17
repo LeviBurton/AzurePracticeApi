@@ -19,13 +19,7 @@ var connectionString =
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(connectionString);
-var customerServiceRegistered =
-    builder.Services.Any(x =>
-        x.ServiceType == typeof(ICustomerService));
 
-Console.WriteLine(
-    $"ICustomerService registered: {customerServiceRegistered}");
-    
 if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING")))
 {
     builder.Services.AddOpenTelemetry()
