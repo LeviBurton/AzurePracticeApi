@@ -103,10 +103,12 @@ jobs:
           name: azure-functions
           path: ./functions-package
 
-      - name: Create .azurefunctions directory
+      - name: Prepare Functions package
         run: |
           mkdir -p .azurefunctions
           cp -r ./functions-package/* .azurefunctions/
+          # Create a proper structure for deployment
+          cp -r .azurefunctions/* .
 
       - name: Login to Azure
         uses: azure/login@v2
