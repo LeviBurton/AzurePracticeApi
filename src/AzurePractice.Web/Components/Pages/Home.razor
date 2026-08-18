@@ -1,0 +1,52 @@
+@page "/ui"
+
+@using AzurePractice.Application
+@using AzurePractice.Domain
+
+@inject ICustomerService CustomerService
+
+<PageTitle>Customers</PageTitle>
+
+<h1>Customers</h1>
+
+@if (_customers is null)
+{
+    <p>Loading...</p>
+}
+else if (_customers.Count == 0)
+{
+    <p>No customers found.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in _customers)
+            {
+                <tr>
+                    <td>@customer.Id</td>
+                    <td>@customer.Name</td>
+                    <td>@customer.Email</td>
+                    <td>@customer.CreatedUtc</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Customer>? _customers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _customers = await CustomerService.GetAllAsync();
+    }
+}

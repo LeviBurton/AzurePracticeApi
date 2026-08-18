@@ -1,0 +1,47 @@
+@page "/ui/customers/create"
+@rendermode RenderMode.InteractiveServer
+@using AzurePractice.Application
+@using AzurePractice.Domain
+@using AzurePractice.Web.Dtos.Customers
+@using Microsoft.AspNetCore.Components.Forms
+
+@inject ICustomerService CustomerService
+@inject NavigationManager Navigation
+
+<PageTitle>Create Customer</PageTitle>
+
+<h1>Create Customer</h1>
+
+<EditForm Model="_request" OnValidSubmit="CreateCustomerAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label for="name">Name</label>
+        <InputText id="name" @bind-Value="_request.Name" />
+        <ValidationMessage For="@(() => _request.Name)" />
+    </div>
+
+    <div>
+        <label for="email">Email</label>
+        <InputText id="email" @bind-Value="_request.Email" />
+        <ValidationMessage For="@(() => _request.Email)" />
+    </div>
+
+    <button type="submit">Create Customer</button>
+</EditForm>
+
+@code {
+    private readonly CreateCustomerRequest _request = new();
+
+    private async Task CreateCustomerAsync()
+    {
+        var customer = new Customer
+        {
+            Name = _request.Name,
+            Email = _request.Email
+        };
+
+        await CustomerService.CreateAsync(customer);
+        Navigation.NavigateTo("/ui");
+    }
+}
