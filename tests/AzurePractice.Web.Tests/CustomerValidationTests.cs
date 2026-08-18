@@ -26,8 +26,8 @@ public class CustomerValidationTests
 
                     // Add queue storage configuration
                     builder.UseSetting(
-                        "AzureQueueStorage:ConnectionString",
-                        "UseDevelopmentStorage=true");
+    "AzureQueueStorage:ConnectionString",
+    "DefaultEndpointsProtocol=https;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXOU+FxsxrWXIVs9j/DontEditThisKey/==;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;");
                 });
 
         var client = factory.CreateClient();

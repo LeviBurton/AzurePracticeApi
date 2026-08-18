@@ -22,7 +22,7 @@ public class CustomerCreationTests
                     builder.UseSetting(
                         "ConnectionStrings:DefaultConnection",
                         "Server=localhost;Database=TestDb;User Id=test;Password=test;");
-                        
+
                     builder.UseSetting(
                         "ConnectionStrings:DefaultConnection",
                         "Server=localhost;Database=TestDb;User Id=test;Password=test;");
@@ -30,7 +30,7 @@ public class CustomerCreationTests
                     // Add queue storage configuration
                     builder.UseSetting(
                         "AzureQueueStorage:ConnectionString",
-                        "UseDevelopmentStorage=true"); // or use "DefaultEndpointsProtocol=https;AccountName=test;AccountKey=test=="
+                        "DefaultEndpointsProtocol=https;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXOU+FxsxrWXIVs9j/DontEditThisKey/==;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;");
                         
                     builder.ConfigureServices(services =>
                     {
