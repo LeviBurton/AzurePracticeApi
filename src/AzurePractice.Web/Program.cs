@@ -4,7 +4,13 @@ using AzurePractice.Application;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+builder.Services
+    .AddRazorComponents()
+    .AddInteractiveServerComponents();
+
 builder.Services.AddOpenApi();
+
 
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection")
@@ -24,8 +30,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAntiforgery();
+
+app.MapStaticAssets();
+app.UseStaticFiles();
+
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapRazorComponents<AzurePractice.Web.Components.App>()
+    .AddInteractiveServerRenderMode();
 
 app.Run();
