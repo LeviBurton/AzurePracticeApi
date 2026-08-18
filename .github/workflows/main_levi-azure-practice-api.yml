@@ -51,6 +51,7 @@ jobs:
         with:
           name: azure-functions
           path: ${{env.DOTNET_ROOT}}/functions
+          include-hidden-files: true
 
   deploy:
     if: github.ref == 'refs/heads/main'
@@ -103,12 +104,12 @@ jobs:
           name: azure-functions
           path: ./functions-package
 
-      - name: Prepare Functions package
+      - name: Verify Functions artifact
         run: |
-          mkdir -p .azurefunctions
-          cp -r ./functions-package/* .azurefunctions/
-          # Create a proper structure for deployment
-          cp -r .azurefunctions/* .
+          echo "Functions package contents:"
+          ls -la ./functions-package
+          test -f ./functions-package/host.json
+          test -d ./functions-package/.azurefunctions
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -121,4 +122,5 @@ jobs:
         uses: Azure/functions-action@v1
         with:
           app-name: levi-azure-practice-functions
-          package: ./.azurefunctions
+          package: ./functions-package
+          remote-build: false
