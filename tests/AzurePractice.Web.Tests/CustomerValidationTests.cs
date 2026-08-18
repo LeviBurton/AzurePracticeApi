@@ -12,14 +12,16 @@ public class CustomerValidationTests
     {
         await using var factory =
             new WebApplicationFactory<Program>()
-                .WithWebHostBuilder(builder =>
-                {
-                    // The application requires a connection string at startup.
-                    // This test never reaches the database, so a dummy value is enough.
-                    builder.UseSetting(
-                        "ConnectionStrings:DefaultConnection",
-                        "Server=localhost;Database=TestDb;User Id=test;Password=test;");
-                });
+            .WithWebHostBuilder(builder =>
+            {
+                builder.UseSetting(
+                    "ConnectionStrings:DefaultConnection",
+                    "Server=localhost;Database=TestDb;User Id=test;Password=test;");
+
+                builder.UseSetting(
+                    "QueueStorage:ConnectionString",
+                    "UseDevelopmentStorage=true");
+            });
 
         var client = factory.CreateClient();
 

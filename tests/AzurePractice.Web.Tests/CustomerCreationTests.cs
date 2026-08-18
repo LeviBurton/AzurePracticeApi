@@ -23,6 +23,10 @@ public class CustomerCreationTests
                         "ConnectionStrings:DefaultConnection",
                         "Server=localhost;Database=TestDb;User Id=test;Password=test;");
 
+                    builder.UseSetting(
+                        "QueueStorage:ConnectionString",
+                        "UseDevelopmentStorage=true");
+
                     builder.ConfigureServices(services =>
                     {
                         services.RemoveAll<ICustomerService>();

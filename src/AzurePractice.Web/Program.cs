@@ -11,13 +11,28 @@ builder.Services
 
 builder.Services.AddOpenApi();
 
-
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException(
         "Connection string 'DefaultConnection' was not found.");
 
 builder.Services.AddInfrastructure(connectionString);
+
+var queueName =
+    builder.Configuration["QueueStorage:QueueName"]
+    ?? "customer-work-items";
+
+var queueConnectionString =
+    builder.Configuration["QueueStorage:ConnectionString"];
+
+var queueServiceUri =
+    builder.Configuration["QueueStorage:ServiceUri"];
+
+builder.Services.AddQueueMessaging(
+    queueName,
+    queueConnectionString,
+    queueServiceUri);
+
 builder.Services.AddApplication();
 
 var app = builder.Build();
