@@ -12,23 +12,16 @@ public class CustomerValidationTests
     {
         await using var factory =
             new WebApplicationFactory<Program>()
-                .WithWebHostBuilder(builder =>
-                {
-                    // The application requires a connection string at startup.
-                    // This test never reaches the database, so a dummy value is enough.
-                    builder.UseSetting(
-                        "ConnectionStrings:DefaultConnection",
-                        "Server=localhost;Database=TestDb;User Id=test;Password=test;");
-                        
-                    builder.UseSetting(
-                            "ConnectionStrings:DefaultConnection",
-                            "Server=localhost;Database=TestDb;User Id=test;Password=test;");
+            .WithWebHostBuilder(builder =>
+            {
+                builder.UseSetting(
+                    "ConnectionStrings:DefaultConnection",
+                    "Server=localhost;Database=TestDb;User Id=test;Password=test;");
 
-                    // Add queue storage configuration
-                    builder.UseSetting(
-    "AzureQueueStorage:ConnectionString",
-    "DefaultEndpointsProtocol=https;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXOU+FxsxrWXIVs9j/DontEditThisKey/==;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;");
-                });
+                builder.UseSetting(
+                    "QueueStorage:ConnectionString",
+                    "UseDevelopmentStorage=true");
+            });
 
         var client = factory.CreateClient();
 
