@@ -5,6 +5,7 @@
 @using AzurePractice.Web.Dtos.Customers
 @using Microsoft.AspNetCore.Components.Forms
 
+@inject ICustomerQueuePublisher CustomerQueuePublisher
 @inject ICustomerService CustomerService
 @inject NavigationManager Navigation
 
@@ -41,7 +42,13 @@
             Email = _request.Email
         };
 
-        await CustomerService.CreateAsync(customer);
+        var createdCustomer =
+            await CustomerService.CreateAsync(customer);
+
+        await CustomerQueuePublisher.EnqueueAsync(
+            createdCustomer.Id,
+            "process");
+
         Navigation.NavigateTo("/ui");
     }
 }
