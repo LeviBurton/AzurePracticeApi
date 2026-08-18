@@ -19,6 +19,15 @@ public class CustomerValidationTests
                     builder.UseSetting(
                         "ConnectionStrings:DefaultConnection",
                         "Server=localhost;Database=TestDb;User Id=test;Password=test;");
+                        
+                    builder.UseSetting(
+                            "ConnectionStrings:DefaultConnection",
+                            "Server=localhost;Database=TestDb;User Id=test;Password=test;");
+
+                    // Add queue storage configuration
+                    builder.UseSetting(
+                        "AzureQueueStorage:ConnectionString",
+                        "UseDevelopmentStorage=true");
                 });
 
         var client = factory.CreateClient();

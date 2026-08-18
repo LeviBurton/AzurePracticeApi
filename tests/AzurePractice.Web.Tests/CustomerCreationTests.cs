@@ -22,7 +22,16 @@ public class CustomerCreationTests
                     builder.UseSetting(
                         "ConnectionStrings:DefaultConnection",
                         "Server=localhost;Database=TestDb;User Id=test;Password=test;");
+                        
+                    builder.UseSetting(
+                        "ConnectionStrings:DefaultConnection",
+                        "Server=localhost;Database=TestDb;User Id=test;Password=test;");
 
+                    // Add queue storage configuration
+                    builder.UseSetting(
+                        "AzureQueueStorage:ConnectionString",
+                        "UseDevelopmentStorage=true"); // or use "DefaultEndpointsProtocol=https;AccountName=test;AccountKey=test=="
+                        
                     builder.ConfigureServices(services =>
                     {
                         services.RemoveAll<ICustomerService>();
