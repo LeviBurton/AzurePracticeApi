@@ -19,7 +19,7 @@ public class PracticeTimerFunction
 
     [Function("PracticeTimerFunction")]
     public async Task Run(
-        [TimerTrigger("*/10 * * * * *")] TimerInfo myTimer)
+        [TimerTrigger("0 */5 * * * *")] TimerInfo myTimer)
     {
         var customers = await _customerService.GetAllAsync();
 
