@@ -3,11 +3,14 @@
 @using AzurePractice.Application
 @using AzurePractice.Domain
 @using AzurePractice.Web.Dtos.Customers
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Forms
 
 @inject ICustomerQueuePublisher CustomerQueuePublisher
 @inject ICustomerService CustomerService
 @inject NavigationManager Navigation
+
+@attribute [Authorize(Policy = "CanCreateCustomers")]
 
 <PageTitle>Create Customer</PageTitle>
 

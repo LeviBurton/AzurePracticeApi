@@ -1,10 +1,31 @@
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 using AzurePractice.Infrastructure;
 using AzurePractice.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services
+    .AddControllersWithViews()
+    .AddMicrosoftIdentityUI();
 
+builder.Services
+    .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(
+        builder.Configuration.GetSection("AzureAd"))
+    .EnableTokenAcquisitionToCallDownstreamApi(
+        new[] { "User.Read" })
+    .AddMicrosoftGraph()
+    .AddInMemoryTokenCaches();
+
+builder.Services.Configure<OpenIdConnectOptions>(
+    OpenIdConnectDefaults.AuthenticationScheme,
+    options =>
+    {
+        options.ResponseType = "code";
+    });
+    
 builder.Services
     .AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -34,8 +55,21 @@ builder.Services.AddQueueMessaging(
     queueServiceUri);
 
 builder.Services.AddApplication();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CanCreateCustomers", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireRole("CustomerCreator");
+    });
+});
 
 var app = builder.Build();
+
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseAntiforgery();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -45,16 +79,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAntiforgery();
-
 app.MapStaticAssets();
 app.UseStaticFiles();
 
-app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers();   
 
 app.MapRazorComponents<AzurePractice.Web.Components.App>()
     .AddInteractiveServerRenderMode();
+
 
 app.Run();
